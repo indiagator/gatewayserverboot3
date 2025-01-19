@@ -18,10 +18,14 @@ spring:
             - Path=/**
 
 logging:
+  pattern:
+      level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
     root: DEBUG
     io.micrometer: DEBUG
-    brave: DEBUG
+    io.opentelemetry: TRACE # Add this line to enable TRACE logging for OpenTelemetry
+    org.springframework.cloud.gateway: TRACE # Add this line to enable TRACE logging for Spring Cloud Gateway
+
 
 management:
   tracing:

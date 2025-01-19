@@ -1,0 +1,43 @@
+
+
+spring:
+  application:
+    name: gateway-server
+  config:
+    import: configserver:http://config-server:8888
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: service-routes
+          uri: lb://**
+          predicates:
+            - Path=/**
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    root: DEBUG
+    io.micrometer: DEBUG
+    io.opentelemetry: TRACE # Add this line to enable TRACE logging for OpenTelemetry
+    org.springframework.cloud.gateway: TRACE # Add this line to enable TRACE logging for Spring Cloud Gateway
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # Set the sampling probability (1.0 = 100%)
+  otlp:
+    tracing:
+      endpoint: http://zipkin-server:9411/api/v2/spans
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+server:
+  port: 8072

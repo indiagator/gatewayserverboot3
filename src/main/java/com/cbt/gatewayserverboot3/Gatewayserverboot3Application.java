@@ -12,8 +12,7 @@ public class Gatewayserverboot3Application
 
     public static void main(String[] args)
     {
-
-        SpringApplication.run(Gatewayserverboot3Application.class, args);
+        SpringApplication.run(Gatewayserverboot3Application.class);
     }
 
 }
